@@ -1,0 +1,39 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+div#topImage{
+    background-image: url(/Users/kubonobuhiro/Desktop/img/jinja_back.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    text-align: center;
+    line-height: 320px;
+    width: 100vw;
+    height: 320px;
+}
+
+.title{
+    background-color: rgba(255, 255, 178, 0.807);
+    color: #151515;
+    padding: 20px 30px;
+    border-radius: 40px;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 15px;
+}
+
+.header_menu {
+    background-color: #151515;
+    text-align: center;
+    padding: 5px;
+}
+
+.header_menu a {
+    color: #fcfcfc;
+    text-decoration: none;
+    margin: 80px;
+    font-size: 20px;
+}

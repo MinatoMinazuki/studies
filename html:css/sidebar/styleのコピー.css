@@ -1,0 +1,36 @@
+body{
+    margin: 0;
+    font-size: 2rem;
+    display: flex;
+    min-height: 100vh;
+    background-color: lightgreen;
+}
+main{
+    background-color: rgba(153, 255, 0, 0.725);
+    width: 700px;
+    margin: 0 auto;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+aside{
+    width: 25%;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+}
+ul{
+    background-color: rgb(208, 255, 137);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+li{
+    border-bottom: 1px solid black;
+}
+div{
+    background-color: rgb(208, 255, 137);
+    height: 200px;
+    margin-top: auto;
+    border-top: 1px solid black;
+}

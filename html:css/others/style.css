@@ -1,0 +1,23 @@
+.container {
+    background-color: #ff7f50;
+    width: 200px;
+    height: 200px;
+}
+
+.item {
+    width: 100px;
+    height: 100px;
+}
+
+.item1 {
+    background-color: aqua;
+    display: inline;
+}
+
+.item2{
+    background-color: magenta;
+    margin: 30px;
+    padding: 30px;
+    border: 5px solid #151515;
+    box-sizing: border-box;
+}
