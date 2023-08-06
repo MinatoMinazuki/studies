@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Noto Sans JP";
 }
 
 div#topImage{
@@ -36,4 +37,35 @@ div#topImage{
     text-decoration: none;
     margin: 80px;
     font-size: 20px;
+}
+
+.contents {
+    height: auto;
+    width: 100%;
+    background-color: #d9d9d9;
+    padding: 20px 0;
+}
+
+.content_news,
+.content_gall {
+    width: 75%;
+    height: 380px;
+    margin: 0 auto;
+    background-color: #fcfcfc;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.content_news{
+
+}
+
+.content_gall{
+    margin-top: 20px;
+}
+
+.content_title {
+    padding-left: 10px;
+    line-height: 2.5;
 }
