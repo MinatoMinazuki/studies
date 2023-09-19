@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>○×ゲーム</title>
+</head>
+<body>
+  <table border="3">
+    <tbody>
+      <tr class="1stLine">
+        <td class="1stColumn diagonalLeft"></td>
+        <td class="2ndCulomn"></td>
+        <td class="3rdColumn diagonalRight"></td>
+      </tr>
+      <tr class="2ndLine">
+        <td class="1stColumn"></td>
+        <td class="2ndCulomn diagonalLeft diagonalRight"></td>
+        <td class="3rdColumn"></td>
+      </tr>
+      <tr class="3rdLine">
+        <td class="1stColumn diagonalRight"></td>
+        <td class="2ndCulomn"></td>
+        <td class="3rdColumn diagonalLeft"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="judgement">
+    <p class="cerclejud"></p>
+    <p class="crossjud"></p>
+  </div>
+  <div class="button_wrapper">
+    <button class="reset">RESET</button>
+  </div>
+</body>
+<style>
+
+  table{
+    margin: auto;
+  }
+
+  td{
+    width: 100px;
+    height: 100px;
+    position: relative;
+  }
+
+  td.cercle{
+    background-image: url(img/cercle.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  td.cross{
+    background-image: url(img/cross.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .button_wrapper{
+    text-align: center;
+  }
+
+  .reset{
+    display: none;
+    background: linear-gradient(45deg, #ffbb1e, #ff9158);
+    font-size: 20px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    color: #fcfcfc;
+    box-sizing: border-box;
+    border: none;
+  }
+
+  .reset:hover{
+    background: linear-gradient(45deg, #ffe5a8, #ffc8ac);
+    cursor: pointer;
+  }
+
+  .win{
+    color: red;
+    font-size: 20px;
+  }
+
+  .lose{
+    color: blue;
+    font-size: 15px;
+  }
+
+  .judgement{
+    margin: 20px 0;
+    text-align: center;
+  }
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  $(function(){
+
+    var order = 0;
+
+    function judgement() {
+
+      $("tbody").each(function(){
+        if($(this).find(".1stLine").find(".cercle").length === 3 ||
+           $(this).find(".2ndLine").find(".cercle").length === 3 ||
+           $(this).find(".3rdLine").find(".cercle").length === 3 ||
+           $(this).find(".1stColumn.cercle").length === 3 ||
+           $(this).find(".2ndCulomn.cercle").length === 3 ||
+           $(this).find(".3rdColumn.cercle").length === 3 ||
+           $(this).find(".diagonalLeft.cercle").length === 3 ||
+           $(this).find(".diagonalRight.cercle").length === 3){
+          $(".cerclejud").text("先手の勝利！");
+          $(".cerclejud").addClass("win");
+          $(".crossjud").text("後手の負け");
+          $(".crossjud").addClass("lose");
+          $(".reset").css("display", "inline-block");
+        } else if($(this).find(".1stLine").find(".cross").length === 3 ||
+           $(this).find(".2ndLine").find(".cross").length === 3 ||
+           $(this).find(".3rdLine").find(".cross").length === 3 ||
+           $(this).find(".1stColumn.cross").length === 3 ||
+           $(this).find(".2ndCulomn.cross").length === 3 ||
+           $(this).find(".3rdColumn.cross").length === 3 ||
+           $(this).find(".diagonalLeft.cross").length === 3 ||
+           $(this).find(".diagonalRight.cross").length === 3 ){
+          $(".cerclejud").text("先手の負け");
+          $(".cerclejud").addClass("lose");
+          $(".crossjud").text("後手の勝利！");
+          $(".crossjud").addClass("win");
+          $(".reset").css("display", "inline-block");
+        } else if($(this).find(".click").length === 9) {
+          $(".judgement").text("引き分けです……");
+          $(".reset").css("display", "inline-block");
+
+        }
+      });
+    }
+
+    $("td").on("click", function(){
+      if($(this).hasClass("cercle") || $(this).hasClass("cross")){
+        //
+      } else if ($(".cerclejud").text().length !== 0){
+        $(this).off();
+      } else {
+        $(this).addClass("click");
+        if (order % 2 === 0) {
+          $(this).addClass("cercle");
+          judgement();
+          order ++;
+        } else if( order % 2 === 1){
+          $(this).addClass("cross");
+          judgement();
+          order = 0;
+        } else {
+          //
+        }
+      }
+    });
+
+    $(".reset").on("click", function(){
+      location.reload();
+    })
+  });
+</script>
+</html>
