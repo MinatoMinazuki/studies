@@ -98,9 +98,6 @@
   $(function(){
 
     var order = 0;
-    var field = $("td").length;
-    var place = !$("td").hasClass("1stColumn").length;
-    console.log(place);
 
     function judgement() {
       $("tbody").each(function(){
@@ -130,7 +127,7 @@
           $(".crossjud").text("後手の勝利！");
           $(".crossjud").addClass("win");
           $(".reset").css("display", "inline-block");
-        } else if($(this).find(".clicked").length === 9) {
+        } else if($(this).find(".placed").length === 9) {
           $(".judgement").text("引き分けです……");
           $(".reset").css("display", "inline-block");
         }
@@ -139,15 +136,20 @@
 
     function computer(){
       $(this).off();
+      var place = $("td").length - $(".placed").length;
+      console.log(place);
+
       //初手、中心が空いていれば
       if(order === 1){
-        if(!$(".2ndLine").find(".2ndCulomn").hasClass("clicked")){
-          $(".2ndLine").find(".2ndCulomn").addClass("cross");
+        if(!$(".2ndLine").find(".2ndCulomn").hasClass("placed")){
+          $(".2ndLine").find(".2ndCulomn").addClass("cross placed");
         } else {
-          $(".1stLine").find(".1stColumn").addClass("cross");
+          $(".1stLine").find(".1stColumn").addClass("cross placed");
         }
-      } else if(order > 2){
-        var random = Math.floor(Math.random()*field)
+      } else if(order > 1){
+        var random = Math.floor(Math.random()*place);
+        console.log(random,"a");
+        $("td").not(".placed").eq(random).addClass("cross placed");
       }
     }
 
@@ -157,12 +159,11 @@
       } else if ($(".cerclejud").text().length !== 0){
         $(this).off();
       } else {
-        $(this).addClass("clicked");
         if (order % 2 === 0) {
-          $(this).addClass("cercle");
+          $(this).addClass("cercle placed");
           judgement();
         } else if( order % 2 === 1){
-          $(this).addClass("cross");
+          computer();
           judgement();
         } else {
           //
