@@ -98,46 +98,68 @@
   $(function(){
 
     var order = 0;
+    var gamejud = true;
+    var turn;
+
+    if(order % 2 === 0){
+      turn = "cercle";
+    } else {
+      turn = "cross";
+    }
+
+    function j(){
+      var firstLineCercle = $("tbody").find(".1stLine").find(".cercle").length;
+      console.log(first === 2);
+    }
 
     function judgement() {
-      $("tbody").each(function(){
-        if($(this).find(".1stLine").find(".cercle").length === 3 ||
-           $(this).find(".2ndLine").find(".cercle").length === 3 ||
-           $(this).find(".3rdLine").find(".cercle").length === 3 ||
-           $(this).find(".1stColumn.cercle").length === 3 ||
-           $(this).find(".2ndCulomn.cercle").length === 3 ||
-           $(this).find(".3rdColumn.cercle").length === 3 ||
-           $(this).find(".diagonalLeft.cercle").length === 3 ||
-           $(this).find(".diagonalRight.cercle").length === 3){
+
+      var firstLine = $("tbody").find(".1stLine").find("."+turn+"").length;
+      var secondLine = $("tbody").find(".2ndLine").find("."+turn+"").length;
+      var thirdLine = $("tbody").find(".3rdLine").find("."+turn+"").length;
+      var fistColumn = $("tbody").find(".1stColumn."+turn+"").length;
+      var secondColumn = $("tbody").find(".2ndCulomn."+turn+"").length;
+      var thirdColumn = $("tbody").find(".3rdColumn."+turn+"").length;
+      var diagonalLeft = $("tbody").find(".diagonalLeft."+turn+"").length;
+      var diagonalRight = $("tbody").find(".diagonalRight."+turn+"").length;
+
+      if(firstLine === 3 || secondLine === 3 || thirdLine === 3 ||
+         fistColumn === 3 || secondColumn === 3 || thirdColumn === 3 ||
+         diagonalLeft === 3 || diagonalRight === 3){
+        if(turn === "cercle"){
           $(".cerclejud").text("先手の勝利！");
           $(".cerclejud").addClass("win");
           $(".crossjud").text("後手の負け");
           $(".crossjud").addClass("lose");
           $(".reset").css("display", "inline-block");
-        } else if($(this).find(".1stLine").find(".cross").length === 3 ||
-           $(this).find(".2ndLine").find(".cross").length === 3 ||
-           $(this).find(".3rdLine").find(".cross").length === 3 ||
-           $(this).find(".1stColumn.cross").length === 3 ||
-           $(this).find(".2ndCulomn.cross").length === 3 ||
-           $(this).find(".3rdColumn.cross").length === 3 ||
-           $(this).find(".diagonalLeft.cross").length === 3 ||
-           $(this).find(".diagonalRight.cross").length === 3 ){
+          gamejud = false;
+        } else if (turn === "cross"){
           $(".cerclejud").text("先手の負け");
           $(".cerclejud").addClass("lose");
           $(".crossjud").text("後手の勝利！");
           $(".crossjud").addClass("win");
           $(".reset").css("display", "inline-block");
-        } else if($(this).find(".placed").length === 9) {
-          $(".judgement").text("引き分けです……");
-          $(".reset").css("display", "inline-block");
+          gamejud = false;
         }
-      });
+      } else if($("tbody").find(".placed").length === 9) {
+        $(".judgement").text("引き分けです……");
+        $(".reset").css("display", "inline-block");
+        gamejud = false;
+        }
     }
 
     function computer(){
       $(this).off();
       var place = $("td").length - $(".placed").length;
-      console.log(place);
+
+      var firstLine = $("tbody").find(".1stLine").find(".cross").length;
+      var secondLine = $("tbody").find(".2ndLine").find("."+turn+"").length;
+      var thirdLine = $("tbody").find(".3rdLine").find("."+turn+"").length;
+      var fistColumn = $("tbody").find(".1stColumn."+turn+"").length;
+      var secondColumn = $("tbody").find(".2ndCulomn."+turn+"").length;
+      var thirdColumn = $("tbody").find(".3rdColumn."+turn+"").length;
+      var diagonalLeft = $("tbody").find(".diagonalLeft."+turn+"").length;
+      var diagonalRight = $("tbody").find(".diagonalRight."+turn+"").length;
 
       //初手、中心が空いていれば
       if(order === 1){
@@ -147,17 +169,24 @@
           $(".1stLine").find(".1stColumn").addClass("cross placed");
         }
       } else if(order > 1){
+
         var random = Math.floor(Math.random()*place);
-        console.log(random,"a");
+
+        firstLine === 2 ? $(".1stLine").not(".placed").addClass("cross placed") : 
+        secondLine === 2 ? $(".2stLine").not(".placed").addClass("cross placed") : 
+        thirdLine === 2 ? $(".3stLine").not(".placed").addClass("cross placed") : 
+        fistColumn === 2 ? $(".1stColumn").not(".placed").addClass("cross placed") : 
+        secondColumn === 2 ? $(".2ndColumn").not(".placed").addClass("cross placed") : 
+        thirdColumn === 2 ? $(".3rdColumn").not(".placed").addClass("cross placed") : 
+        diagonalLeft === 2 ? $(".diagonalLeft").not(".placed").addClass("cross placed") : 
+        diagonalRight === 2 ? $(".diagonalRight").not(".placed").addClass("cross placed") : 
         $("td").not(".placed").eq(random).addClass("cross placed");
       }
     }
 
     $("td").on("click", function(){
-      if($(this).hasClass("cercle") || $(this).hasClass("cross")){
-        //
-      } else if ($(".cerclejud").text().length !== 0){
-        $(this).off();
+      if($(this).hasClass("placed") || !gamejud){
+        return false;
       } else {
         if (order % 2 === 0) {
           $(this).addClass("cercle placed");
@@ -170,7 +199,6 @@
         }
       }
       order ++;
-      console.log(order);
     });
 
     $(".reset").on("click", function(){
