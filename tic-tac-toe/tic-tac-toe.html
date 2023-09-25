@@ -8,25 +8,25 @@
 <body>
   <table border="3">
     <tbody>
-      <tr class="1stLine">
-        <td class="1stColumn diagonalLeft"></td>
-        <td class="2ndCulomn"></td>
-        <td class="3rdColumn diagonalRight"></td>
+      <tr class="firstLine">
+        <td class="firstColumn diagonalLeft"></td>
+        <td class="secondColumn"></td>
+        <td class="thirdColumn diagonalRight"></td>
       </tr>
-      <tr class="2ndLine">
-        <td class="1stColumn"></td>
-        <td class="2ndCulomn diagonalLeft diagonalRight"></td>
-        <td class="3rdColumn"></td>
+      <tr class="secondLine">
+        <td class="firstColumn"></td>
+        <td class="secondColumn diagonalLeft diagonalRight"></td>
+        <td class="thirdColumn"></td>
       </tr>
-      <tr class="3rdLine">
-        <td class="1stColumn diagonalRight"></td>
-        <td class="2ndCulomn"></td>
-        <td class="3rdColumn diagonalLeft"></td>
+      <tr class="thirdLine">
+        <td class="firstColumn diagonalRight"></td>
+        <td class="secondColumn"></td>
+        <td class="thirdColumn diagonalLeft"></td>
       </tr>
     </tbody>
   </table>
   <div class="judgement">
-    <p class="cerclejud"></p>
+    <p class="circlejud"></p>
     <p class="crossjud"></p>
   </div>
   <div class="button_wrapper">
@@ -45,7 +45,7 @@
     position: relative;
   }
 
-  td.cercle{
+  td.circle{
     background-image: url(img/cercle.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -101,41 +101,36 @@
     var gamejud = true;
     var turn;
 
-    if(order % 2 === 0){
-      turn = "cercle";
-    } else {
-      turn = "cross";
-    }
-
-    function j(){
-      var firstLineCercle = $("tbody").find(".1stLine").find(".cercle").length;
-      console.log(first === 2);
-    }
-
     function judgement() {
 
-      var firstLine = $("tbody").find(".1stLine").find("."+turn+"").length;
-      var secondLine = $("tbody").find(".2ndLine").find("."+turn+"").length;
-      var thirdLine = $("tbody").find(".3rdLine").find("."+turn+"").length;
-      var fistColumn = $("tbody").find(".1stColumn."+turn+"").length;
-      var secondColumn = $("tbody").find(".2ndCulomn."+turn+"").length;
-      var thirdColumn = $("tbody").find(".3rdColumn."+turn+"").length;
+      if(order % 2 === 0){
+        turn = "circle";
+      } else {
+        turn = "cross";
+      }
+
+      var firstLine = $("tbody").find(".firstLine").find("."+turn+"").length;
+      var secondLine = $("tbody").find(".secondLine").find("."+turn+"").length;
+      var thirdLine = $("tbody").find(".thirdLine").find("."+turn+"").length;
+      var fistColumn = $("tbody").find(".firstColumn."+turn+"").length;
+      var secondColumn = $("tbody").find(".secondColumn."+turn+"").length;
+      var thirdColumn = $("tbody").find(".thirdColumn."+turn+"").length;
       var diagonalLeft = $("tbody").find(".diagonalLeft."+turn+"").length;
       var diagonalRight = $("tbody").find(".diagonalRight."+turn+"").length;
 
       if(firstLine === 3 || secondLine === 3 || thirdLine === 3 ||
          fistColumn === 3 || secondColumn === 3 || thirdColumn === 3 ||
          diagonalLeft === 3 || diagonalRight === 3){
-        if(turn === "cercle"){
-          $(".cerclejud").text("先手の勝利！");
-          $(".cerclejud").addClass("win");
+        if(turn === "circle"){
+          $(".circlejud").text("先手の勝利！");
+          $(".circlejud").addClass("win");
           $(".crossjud").text("後手の負け");
           $(".crossjud").addClass("lose");
           $(".reset").css("display", "inline-block");
           gamejud = false;
         } else if (turn === "cross"){
-          $(".cerclejud").text("先手の負け");
-          $(".cerclejud").addClass("lose");
+          $(".circlejud").text("先手の負け");
+          $(".circlejud").addClass("lose");
           $(".crossjud").text("後手の勝利！");
           $(".crossjud").addClass("win");
           $(".reset").css("display", "inline-block");
@@ -149,39 +144,68 @@
     }
 
     function computer(){
-      $(this).off();
-      var place = $("td").length - $(".placed").length;
 
-      var firstLine = $("tbody").find(".1stLine").find(".cross").length;
-      var secondLine = $("tbody").find(".2ndLine").find("."+turn+"").length;
-      var thirdLine = $("tbody").find(".3rdLine").find("."+turn+"").length;
-      var fistColumn = $("tbody").find(".1stColumn."+turn+"").length;
-      var secondColumn = $("tbody").find(".2ndCulomn."+turn+"").length;
-      var thirdColumn = $("tbody").find(".3rdColumn."+turn+"").length;
-      var diagonalLeft = $("tbody").find(".diagonalLeft."+turn+"").length;
-      var diagonalRight = $("tbody").find(".diagonalRight."+turn+"").length;
+      var firstLine = $("tbody").find(".firstLine");
+      var secondLine = $("tbody").find(".secondLine");
+      var thirdLine = $("tbody").find(".thirdLine");
+      var firstColumnCross = $("tbody").find(".firstColumn.cross");
+      var secondColumnCross = $("tbody").find(".secondColumn.cross");
+      var thirdColumnCross = $("tbody").find(".thirdColumn.cross");
+      var diagonalLeftCross = $("tbody").find(".diagonalLeft.cross");
+      var diagonalRightCross = $("tbody").find(".diagonalRight.cross");
+
+      var firstColumnCiecle = $("tbody").find(".firstColumn.circle");
+      var secondColumnCiecle = $("tbody").find(".secondColumn.circle");
+      var thirdColumnCiecle = $("tbody").find(".thirdColumn.circle");
+      var diagonalLeftCiecle = $("tbody").find(".diagonalLeft.circle");
+      var diagonalRightCiecle = $("tbody").find(".diagonalRight.circle");
 
       //初手、中心が空いていれば
       if(order === 1){
-        if(!$(".2ndLine").find(".2ndCulomn").hasClass("placed")){
-          $(".2ndLine").find(".2ndCulomn").addClass("cross placed");
+        if(!$(".secondLine").find(".secondColumn").hasClass("placed")){
+          $(".secondLine").find(".secondColumn").addClass("cross placed");
         } else {
-          $(".1stLine").find(".1stColumn").addClass("cross placed");
+          $(".firstLine").find(".firstColumn").addClass("cross placed");
         }
       } else if(order > 1){
 
+        var place = $("td").length - $(".placed").length;
         var random = Math.floor(Math.random()*place);
 
-        firstLine === 2 ? $(".1stLine").not(".placed").addClass("cross placed") : 
-        secondLine === 2 ? $(".2stLine").not(".placed").addClass("cross placed") : 
-        thirdLine === 2 ? $(".3stLine").not(".placed").addClass("cross placed") : 
-        fistColumn === 2 ? $(".1stColumn").not(".placed").addClass("cross placed") : 
-        secondColumn === 2 ? $(".2ndColumn").not(".placed").addClass("cross placed") : 
-        thirdColumn === 2 ? $(".3rdColumn").not(".placed").addClass("cross placed") : 
-        diagonalLeft === 2 ? $(".diagonalLeft").not(".placed").addClass("cross placed") : 
-        diagonalRight === 2 ? $(".diagonalRight").not(".placed").addClass("cross placed") : 
-        $("td").not(".placed").eq(random).addClass("cross placed");
+        // console.log(firstColumn.length);
+        // console.log($(".placed").length);
+        // console.log(random);
+
+        if((firstLine.find(".cross").length === 2 || firstLine.find(".circle").length === 2) && $("tbody").find(".firstLine").find(".placed").length !== 3){
+          $(".firstLine").find("td").not(".placed").addClass("cross placed");
+        } else if ((secondLine.find(".cross").length === 2 || secondLine.find(".circle").length === 2) && $("tbody").find(".secondLine").find(".placed").length !== 3){
+          $(".secondLine").find("td").not(".placed").addClass("cross placed");
+        } else if((thirdLine.find(".cross").length === 2 || thirdLine.find(".circle").length === 2) && $("tbody").find(".thirdLine").find(".placed").length !== 3){
+          $(".thirdLine").find("td").not(".placed").addClass("cross placed");
+        } else if((firstColumnCross.length === 2 || firstColumnCiecle.length === 2) && $("tbody").find(".firstColumn.placed").length !== 3){
+          $(".firstColumn").not(".placed").addClass("cross placed");
+        } else if((secondColumnCross.length === 2 || secondColumnCiecle.length === 2) && $("tbody").find(".secondColumn.placed").length !== 3){
+          $(".secondColumn").not(".placed").addClass("cross placed");
+        } else if((thirdColumnCross.length === 2 || thirdColumnCiecle.length === 2) && $("tbody").find(".thirdColumn.placed").length !== 3){
+          $(".thirdColumn").not(".placed").addClass("cross placed");
+        } else if((diagonalLeftCross.length === 2 || diagonalLeftCiecle.length === 2) && $("tbody").find(".diagonalLeft.placed").length !== 3){
+          $(".diagonalLeft").not(".placed").addClass("cross placed");
+        } else if((diagonalRightCross.length === 2 || diagonalRightCiecle.length === 2) && $("tbody").find(".diagonalRight.placed").length !== 3){
+          $(".diagonalRight").not(".placed").addClass("cross placed");
+        } else {
+          $("td").not(".placed").eq(random).addClass("cross placed");
+        }
       }
+    }
+
+    function turnChange(){
+      if(order % 2 ===0){
+        //
+      } else if(order % 2 ===1){
+        computer();
+        judgement();
+      }
+      order ++;
     }
 
     $("td").on("click", function(){
@@ -189,21 +213,18 @@
         return false;
       } else {
         if (order % 2 === 0) {
-          $(this).addClass("cercle placed");
+          $(this).addClass("circle placed");
           judgement();
-        } else if( order % 2 === 1){
-          computer();
-          judgement();
-        } else {
-          //
         }
+        turnChange();
       }
-      order ++;
+      // console.log(order);
     });
 
     $(".reset").on("click", function(){
       location.reload();
-    })
+    });
+
   });
 </script>
 </html>
