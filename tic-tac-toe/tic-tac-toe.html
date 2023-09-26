@@ -7,6 +7,7 @@
 </head>
 <body>
   <table border="3">
+    <p class="turnText">マスをクリックしたらスタート！</p>
     <tbody>
       <tr class="firstLine">
         <td class="firstColumn diagonalLeft"></td>
@@ -34,6 +35,20 @@
   </div>
 </body>
 <style>
+
+  .turnText{
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .turnText.com{
+    color: red;
+  }
+
+  .turnText.user{
+    color: blue;
+  }
 
   table{
     margin: auto;
@@ -162,11 +177,14 @@
 
       //初手、中心が空いていれば
       if(order === 1){
-        if(!$(".secondLine").find(".secondColumn").hasClass("placed")){
-          $(".secondLine").find(".secondColumn").addClass("cross placed");
-        } else {
-          $(".firstLine").find(".firstColumn").addClass("cross placed");
-        }
+        setTimeout(function(){
+          if(!$(".secondLine").find(".secondColumn").hasClass("placed")){
+            $(".secondLine").find(".secondColumn").addClass("cross placed");
+          } else {
+            $(".firstLine").find(".firstColumn").addClass("cross placed");
+          }
+          turnChange();
+        }, 1500);
       } else if(order > 1){
 
         var place = $("td").length - $(".placed").length;
@@ -176,47 +194,58 @@
         // console.log($(".placed").length);
         // console.log(random);
 
-        if((firstLine.find(".cross").length === 2 || firstLine.find(".circle").length === 2) && $("tbody").find(".firstLine").find(".placed").length !== 3){
-          $(".firstLine").find("td").not(".placed").addClass("cross placed");
-        } else if ((secondLine.find(".cross").length === 2 || secondLine.find(".circle").length === 2) && $("tbody").find(".secondLine").find(".placed").length !== 3){
-          $(".secondLine").find("td").not(".placed").addClass("cross placed");
-        } else if((thirdLine.find(".cross").length === 2 || thirdLine.find(".circle").length === 2) && $("tbody").find(".thirdLine").find(".placed").length !== 3){
-          $(".thirdLine").find("td").not(".placed").addClass("cross placed");
-        } else if((firstColumnCross.length === 2 || firstColumnCiecle.length === 2) && $("tbody").find(".firstColumn.placed").length !== 3){
-          $(".firstColumn").not(".placed").addClass("cross placed");
-        } else if((secondColumnCross.length === 2 || secondColumnCiecle.length === 2) && $("tbody").find(".secondColumn.placed").length !== 3){
-          $(".secondColumn").not(".placed").addClass("cross placed");
-        } else if((thirdColumnCross.length === 2 || thirdColumnCiecle.length === 2) && $("tbody").find(".thirdColumn.placed").length !== 3){
-          $(".thirdColumn").not(".placed").addClass("cross placed");
-        } else if((diagonalLeftCross.length === 2 || diagonalLeftCiecle.length === 2) && $("tbody").find(".diagonalLeft.placed").length !== 3){
-          $(".diagonalLeft").not(".placed").addClass("cross placed");
-        } else if((diagonalRightCross.length === 2 || diagonalRightCiecle.length === 2) && $("tbody").find(".diagonalRight.placed").length !== 3){
-          $(".diagonalRight").not(".placed").addClass("cross placed");
-        } else {
-          $("td").not(".placed").eq(random).addClass("cross placed");
-        }
+        setTimeout(function(){
+          if((firstLine.find(".cross").length === 2 || firstLine.find(".circle").length === 2) && $("tbody").find(".firstLine").find(".placed").length !== 3){
+            $(".firstLine").find("td").not(".placed").addClass("cross placed");
+          } else if ((secondLine.find(".cross").length === 2 || secondLine.find(".circle").length === 2) && $("tbody").find(".secondLine").find(".placed").length !== 3){
+            $(".secondLine").find("td").not(".placed").addClass("cross placed");
+          } else if((thirdLine.find(".cross").length === 2 || thirdLine.find(".circle").length === 2) && $("tbody").find(".thirdLine").find(".placed").length !== 3){
+            $(".thirdLine").find("td").not(".placed").addClass("cross placed");
+          } else if((firstColumnCross.length === 2 || firstColumnCiecle.length === 2) && $("tbody").find(".firstColumn.placed").length !== 3){
+            $(".firstColumn").not(".placed").addClass("cross placed");
+          } else if((secondColumnCross.length === 2 || secondColumnCiecle.length === 2) && $("tbody").find(".secondColumn.placed").length !== 3){
+            $(".secondColumn").not(".placed").addClass("cross placed");
+          } else if((thirdColumnCross.length === 2 || thirdColumnCiecle.length === 2) && $("tbody").find(".thirdColumn.placed").length !== 3){
+            $(".thirdColumn").not(".placed").addClass("cross placed");
+          } else if((diagonalLeftCross.length === 2 || diagonalLeftCiecle.length === 2) && $("tbody").find(".diagonalLeft.placed").length !== 3){
+            $(".diagonalLeft").not(".placed").addClass("cross placed");
+          } else if((diagonalRightCross.length === 2 || diagonalRightCiecle.length === 2) && $("tbody").find(".diagonalRight.placed").length !== 3){
+            $(".diagonalRight").not(".placed").addClass("cross placed");
+          } else {
+            $("td").not(".placed").eq(random).addClass("cross placed");
+          }
+          turnChange();
+        }, 1500);
       }
     }
 
     function turnChange(){
-      if(order % 2 ===0){
-        //
-      } else if(order % 2 ===1){
-        computer();
-        judgement();
+      judgement();
+
+      if (!gamejud){
+        $(".turnText").removeClass("com user");
+        $(".turnText").text("ゲーム終了");
+      } else if(order % 2 === 1){
+        $(".turnText").removeClass("com");
+        $(".turnText").addClass("user");
+        $(".turnText.user").text("あなたの番です");
+      } else if(order % 2 === 0){
+        $(".turnText").removeClass("user");
+        $(".turnText").addClass("com");
+        $(".turnText.com").text("コンピュータの番です");
       }
       order ++;
     }
 
     $("td").on("click", function(){
-      if($(this).hasClass("placed") || !gamejud){
+      if($(this).hasClass("placed") || !gamejud || order % 2 === 1){
         return false;
       } else {
-        if (order % 2 === 0) {
-          $(this).addClass("circle placed");
-          judgement();
-        }
+        $(this).addClass("circle placed");
         turnChange();
+        if(gamejud){
+          computer();
+        }
       }
       // console.log(order);
     });
