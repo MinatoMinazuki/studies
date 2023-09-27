@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>じゃんけん</title>
+</head>
+<body>
+  <div>
+    <div>
+      <img src="">
+    </div>
+    <p class="comPatterns"></p>
+  </div>
+  <div>
+    <button class="playerRock">グー</button>
+    <button class="playerpaper">パー</button>
+    <button class="playerScissors">チョキ</button>
+  </div>
+  <p class="result"></p>
+</body>
+<style>
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(function(){
+
+    var comPatterns = ["rock", "paper", "scissors"];
+    var playerChoose;
+
+    $("button").on("click", function(){
+
+      var pattern = Math.floor(Math.random()*(comPatterns.length));
+      var comChoose = comPatterns[pattern];
+
+      $(".comPatterns").text(comChoose);
+
+      if($(this).attr("class") === "playerRock"){
+        playerChoose = "rock";
+      } else if($(this).attr("class") === "playerpaper"){
+        playerChoose = "paper";
+      } else if($(this).attr("class") === "playerScissors"){
+        playerChoose = "scissors";
+      }
+
+      if(comChoose === playerChoose){
+        $(".result").text("あいこです");
+      }
+
+      console.log(playerChoose);
+
+    });
+
+  });
+</script>
+</html>
