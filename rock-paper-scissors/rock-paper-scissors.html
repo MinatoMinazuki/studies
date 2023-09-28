@@ -13,9 +13,9 @@
     <p class="comPatterns"></p>
   </div>
   <div>
-    <button class="playerRock">グー</button>
-    <button class="playerpaper">パー</button>
-    <button class="playerScissors">チョキ</button>
+    <button class="playerChoose playerRock">グー</button>
+    <button class="playerChoose playerpaper">パー</button>
+    <button class="playerChoose playerScissors">チョキ</button>
   </div>
   <p class="result"></p>
 </body>
@@ -27,27 +27,68 @@
 
     var comPatterns = ["rock", "paper", "scissors"];
     var playerChoose;
+    var playerPatterns = [];
 
     $("button").on("click", function(){
 
       var pattern = Math.floor(Math.random()*(comPatterns.length));
-      var comChoose = comPatterns[pattern];
+      var comChoose;
 
-      $(".comPatterns").text(comChoose);
-
-      if($(this).attr("class") === "playerRock"){
+      if($(this).hasClass("playerRock")){
         playerChoose = "rock";
-      } else if($(this).attr("class") === "playerpaper"){
+      } else if($(this).hasClass("playerpaper")){
         playerChoose = "paper";
-      } else if($(this).attr("class") === "playerScissors"){
+      } else if($(this).hasClass("playerScissors")){
         playerChoose = "scissors";
       }
 
-      if(comChoose === playerChoose){
-        $(".result").text("あいこです");
+      playerPatterns.push(playerChoose);
+
+      console.log(playerPatterns);
+
+      if(playerPatterns.length > 5){
+        if(playerPatterns.indexOf("rock") > (playerPatterns.indexOf("paper") || playerPatterns.indexOf("scissors")) ){
+          comChoose = comPatterns[1];
+          console.log("paper")
+        } else if(playerPatterns.indexOf("paper") > (playerPatterns.indexOf("rock") || playerPatterns.indexOf("scissors")) ){
+          comChoose = comPatterns[2];
+          console.log("scissors");
+        } else if(playerPatterns.indexOf("scissors") > (playerPatterns.indexOf("rock") || playerPatterns.indexOf("paper")) ){
+          comChoose = comPatterns[0];
+          console.log("rock");
+        } else {
+          comChoose = comPatterns[pattern];
+          console.log("ran")
+        }
+      } else {
+        comChoose = comPatterns[pattern];
+        console.log("dom");
       }
 
-      console.log(playerChoose);
+      console.log(playerPatterns["scissors"].length);
+
+      $(".comPatterns").text(comChoose);
+
+
+      var eachPattern = [];
+      eachPattern.push(playerChoose, comChoose);
+      console.log(eachPattern);
+
+      if(comChoose === playerChoose){
+        $(".result").text("あいこです");
+      } else if(playerChoose === "rock" && comChoose === "scissors"){
+        $(".result").text("プレイヤーの勝ち！")
+      } else if(playerChoose === "rock" && comChoose === "paper"){
+        $(".result").text("コンピュータの勝ち！")
+      } else if(playerChoose === "paper" && comChoose === "rock"){
+        $(".result").text("プレイヤーの勝ち！")
+      } else if(playerChoose === "paper" && comChoose === "scissors"){
+        $(".result").text("コンピュータの勝ち！")
+      } else if(playerChoose === "scissors" && comChoose === "paper"){
+        $(".result").text("プレイヤーの勝ち！")
+      } else if(playerChoose === "scissors" && comChoose === "rock"){
+        $(".result").text("コンピュータの勝ち！")
+      }
 
     });
 
