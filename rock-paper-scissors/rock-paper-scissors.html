@@ -6,20 +6,57 @@
   <title>じゃんけん</title>
 </head>
 <body>
-  <div>
-    <div>
-      <img src="">
-    </div>
+  <div class="comWrapper">
+    <div class="comChoose"></div>
     <p class="comPatterns"></p>
   </div>
-  <div>
+  <div class="playerBtn">
     <button class="playerChoose playerRock">グー</button>
     <button class="playerChoose playerpaper">パー</button>
     <button class="playerChoose playerScissors">チョキ</button>
   </div>
   <p class="result"></p>
+  <button class="reset">RESET</button>
 </body>
 <style>
+
+  .comWrapper{
+    text-align: center;
+  }
+
+  .comChoose{
+    width: 250px;
+    height: 250px;
+    margin: auto;
+  }
+
+  .comChoose.rock{
+    background-image: url(img/janken_gu.png);
+    background-size: cover;
+  }
+
+  .comChoose.paper{
+    background-image: url(img/janken_pa.png);
+    background-size: cover;
+  }
+
+  .comChoose.scissors{
+    background-image: url(img/janken_choki.png);
+    background-size: cover;
+  }
+
+  .playerBtn{
+    text-align: center;
+  }
+
+  .playerChoose{
+    margin: 5px;
+  }
+
+  .result{
+    text-align: center;
+  }
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -27,52 +64,60 @@
 
     var comPatterns = ["rock", "paper", "scissors"];
     var playerChoose;
-    var playerPatterns = [];
+    var playerPatternsRock = [];
+    var playerPatternsPaper = [];
+    var playerPatternsScissors = [];
+    var count = 0;
 
-    $("button").on("click", function(){
+    $(".playerChoose").on("click", function(){
+
+      count++;
 
       var pattern = Math.floor(Math.random()*(comPatterns.length));
       var comChoose;
 
       if($(this).hasClass("playerRock")){
         playerChoose = "rock";
+        playerPatternsRock.push(playerChoose);
       } else if($(this).hasClass("playerpaper")){
         playerChoose = "paper";
+        playerPatternsPaper.push(playerChoose)
       } else if($(this).hasClass("playerScissors")){
         playerChoose = "scissors";
+        playerPatternsScissors.push(playerChoose)
       }
 
-      playerPatterns.push(playerChoose);
+      console.log(count);
 
-      console.log(playerPatterns);
-
-      if(playerPatterns.length > 5){
-        if(playerPatterns.indexOf("rock") > (playerPatterns.indexOf("paper") || playerPatterns.indexOf("scissors")) ){
+      if(count > 5){
+        if(playerPatternsRock.length > playerPatternsScissors.length){
           comChoose = comPatterns[1];
-          console.log("paper")
-        } else if(playerPatterns.indexOf("paper") > (playerPatterns.indexOf("rock") || playerPatterns.indexOf("scissors")) ){
+          $(".comChoose").removeClass("rock paper scissors");
+          $(".comChoose").addClass(comChoose);
+        } else if(playerPatternsPaper.length > playerPatternsRock.length){
           comChoose = comPatterns[2];
-          console.log("scissors");
-        } else if(playerPatterns.indexOf("scissors") > (playerPatterns.indexOf("rock") || playerPatterns.indexOf("paper")) ){
+          $(".comChoose").removeClass("rock paper scissors");
+          $(".comChoose").addClass(comChoose);
+        } else if(playerPatternsScissors.length > playerPatternsPaper.length){
           comChoose = comPatterns[0];
-          console.log("rock");
+          $(".comChoose").removeClass("rock paper scissors");
+          $(".comChoose").addClass(comChoose);
         } else {
           comChoose = comPatterns[pattern];
-          console.log("ran")
+          $(".comChoose").removeClass("rock paper scissors");
+          $(".comChoose").addClass(comChoose);
         }
       } else {
         comChoose = comPatterns[pattern];
-        console.log("dom");
+        $(".comChoose").removeClass("rock paper scissors");
+        $(".comChoose").addClass(comChoose);
       }
 
-      console.log(playerPatterns["scissors"].length);
-
-      $(".comPatterns").text(comChoose);
+      $(".comPatterns").text("ぽん！");
 
 
       var eachPattern = [];
       eachPattern.push(playerChoose, comChoose);
-      console.log(eachPattern);
 
       if(comChoose === playerChoose){
         $(".result").text("あいこです");
