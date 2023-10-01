@@ -69,6 +69,10 @@
     var playerPatternsScissors = [];
     var count = 0;
 
+    setInterval(function(){
+      $
+    })
+
     $(".playerChoose").on("click", function(){
 
       count++;
@@ -135,6 +139,9 @@
         $(".result").text("コンピュータの勝ち！")
       }
 
+    });
+    $(".reset").on("click", function(){
+      location.reload();
     });
 
   });
