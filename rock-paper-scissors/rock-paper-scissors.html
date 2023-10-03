@@ -6,19 +6,62 @@
   <title>じゃんけん</title>
 </head>
 <body>
-  <div class="comWrapper">
-    <div class="comChoose"></div>
-    <p class="comPatterns"></p>
+  <div class="modeBtn" data-shown="1">
+    <button class="modeSelct modeEasy">EASY</button>
+    <button class="modeSelct modeNomal">NORMAL</button>
+    <button class="modeSelct modeHard">HARD</button>
   </div>
-  <div class="playerBtn">
-    <button class="playerChoose playerRock">グー</button>
-    <button class="playerChoose playerpaper">パー</button>
-    <button class="playerChoose playerScissors">チョキ</button>
+  <div class="contentsWlapper">
+    <div class="comWrapper">
+      <div class="comChoose"></div>
+      <p class="comPatterns">じゃんけん……</p>
+    </div>
+    <div class="playerBtn">
+      <button class="playerChoose playerRock">グー</button>
+      <button class="playerChoose playerpaper">パー</button>
+      <button class="playerChoose playerScissors">チョキ</button>
+    </div>
+    <p class="playerChooseBtn">手を選んでね</p>
+    <p class="result"></p>
+    <table border="3">
+      <tbody>
+        <tr>
+          <td>勝敗数</td>
+          <td>勝ち</td>
+          <td>負け</td>
+          <td>あいこ</td>
+          <td>合計</td>
+        </tr>
+        <tr>
+          <td>Player</td>
+          <td class="playerWin"></td>
+          <td class="playerLoose"></td>
+          <td class="drowCount"></td>
+          <td class="allCount"></td>
+        </tr>
+        <tr>
+          <td>Computer</td>
+          <td class="comWin"></td>
+          <td class="comLoose"></td>
+          <td class="drowCount"></td>
+          <td class="allCount"></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <p class="result"></p>
-  <button class="reset">RESET</button>
+  <div class="resetWrapper">
+    <button class="reset">RESET</button>
+  </div>
 </body>
 <style>
+
+  .modeBtn{
+    text-align: center;
+  }
+
+  .modeBtn[data-shown="0"]{
+    display: none;
+  }
 
   .comWrapper{
     text-align: center;
@@ -57,6 +100,23 @@
     text-align: center;
   }
 
+  .playerChooseBtn{
+    text-align: center;
+  }
+
+  table{
+    margin: auto;
+  }
+
+  td{
+    text-align: right;
+  }
+
+  .resetWrapper{
+    text-align: center;
+    margin-top: 20px;
+  }
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -67,79 +127,141 @@
     var playerPatternsRock = [];
     var playerPatternsPaper = [];
     var playerPatternsScissors = [];
-    var count = 0;
+    var winFlag = false;
+    var count = 0,
+        playersWin = 0,
+        playersLoose = 0,
+        comsWin = 0,
+        comsLoose = 0,
+        drowCount = 0;
 
-    setInterval(function(){
-      $
+    var modeSelect;
+
+    $(".modeSelect").on("click", function(){
+      if ($(this).hasClass(".modeEasy")) {
+        modeSelect = "easy";
+      } else if ($(this).hasClass(".modeNomal")) {
+        modeSelect = "normal";
+      } else if ($(this)) {
+        modeSelect = "hard";
+      }
     })
 
-    $(".playerChoose").on("click", function(){
+    function CPU (){
 
-      count++;
+        var pattern = Math.floor(Math.random()*(comPatterns.length));
+        var comChoose;
 
-      var pattern = Math.floor(Math.random()*(comPatterns.length));
-      var comChoose;
-
-      if($(this).hasClass("playerRock")){
-        playerChoose = "rock";
-        playerPatternsRock.push(playerChoose);
-      } else if($(this).hasClass("playerpaper")){
-        playerChoose = "paper";
-        playerPatternsPaper.push(playerChoose)
-      } else if($(this).hasClass("playerScissors")){
-        playerChoose = "scissors";
-        playerPatternsScissors.push(playerChoose)
-      }
-
-      console.log(count);
-
-      if(count > 5){
-        if(playerPatternsRock.length > playerPatternsScissors.length){
-          comChoose = comPatterns[1];
-          $(".comChoose").removeClass("rock paper scissors");
-          $(".comChoose").addClass(comChoose);
-        } else if(playerPatternsPaper.length > playerPatternsRock.length){
-          comChoose = comPatterns[2];
-          $(".comChoose").removeClass("rock paper scissors");
-          $(".comChoose").addClass(comChoose);
-        } else if(playerPatternsScissors.length > playerPatternsPaper.length){
-          comChoose = comPatterns[0];
-          $(".comChoose").removeClass("rock paper scissors");
-          $(".comChoose").addClass(comChoose);
+        if(count > 5){
+          if(playerPatternsRock.length > playerPatternsScissors.length){
+            comChoose = comPatterns[1];
+            $(".comChoose").removeClass("rock paper scissors");
+            $(".comChoose").addClass(comChoose);
+          } else if(playerPatternsPaper.length > playerPatternsRock.length){
+            comChoose = comPatterns[2];
+            $(".comChoose").removeClass("rock paper scissors");
+            $(".comChoose").addClass(comChoose);
+          } else if(playerPatternsScissors.length > playerPatternsPaper.length){
+            comChoose = comPatterns[0];
+            $(".comChoose").removeClass("rock paper scissors");
+            $(".comChoose").addClass(comChoose);
+          } else {
+            comChoose = comPatterns[pattern];
+            $(".comChoose").removeClass("rock paper scissors");
+            $(".comChoose").addClass(comChoose);
+            console.log("ran")
+          }
         } else {
           comChoose = comPatterns[pattern];
           $(".comChoose").removeClass("rock paper scissors");
           $(".comChoose").addClass(comChoose);
+          console.log("dom")
         }
-      } else {
-        comChoose = comPatterns[pattern];
-        $(".comChoose").removeClass("rock paper scissors");
-        $(".comChoose").addClass(comChoose);
-      }
 
-      $(".comPatterns").text("ぽん！");
+        return comChoose;
+
+    }
+
+    function Player (self){
+
+        if($(self).hasClass("playerRock")){
+          playerChoose = "rock";
+          playerPatternsRock.push(playerChoose);
+          $(".playerChooseBtn").text("グー！");
+        } else if($(self).hasClass("playerpaper")){
+          playerChoose = "paper";
+          playerPatternsPaper.push(playerChoose)
+          $(".playerChooseBtn").text("パー！");
+        } else if($(self).hasClass("playerScissors")){
+          playerChoose = "scissors";
+          playerPatternsScissors.push(playerChoose);
+          $(".playerChooseBtn").text("チョキ！");
+        }
+
+        return playerChoose;
+
+    }
 
 
-      var eachPattern = [];
-      eachPattern.push(playerChoose, comChoose);
+    $(".playerChoose").on("click", function(){
+
+      // count++;
+
+      // var playerChoose;
+      // var comChoose;
+
+      // if(modeSelect === "easy"){
+      //   playerChoose = Player(this);
+      //   comChoose = CPU();
+      // } else
+
+      var playerChoose = Player(this);
+      var comChoose = CPU();
+
+      // var eachPattern = [];
+      // eachPattern.push(playerChoose, comChoose);
 
       if(comChoose === playerChoose){
-        $(".result").text("あいこです");
+        $(".result").text("あいこで……");
+        drowCount++;
       } else if(playerChoose === "rock" && comChoose === "scissors"){
-        $(".result").text("プレイヤーの勝ち！")
+        $(".result").text("プレイヤーの勝ち！");
+        playersWin++;
+        comsLoose++;
       } else if(playerChoose === "rock" && comChoose === "paper"){
-        $(".result").text("コンピュータの勝ち！")
+        $(".result").text("コンピュータの勝ち！");
+        comsWin++;
+        playersLoose++;
       } else if(playerChoose === "paper" && comChoose === "rock"){
-        $(".result").text("プレイヤーの勝ち！")
+        $(".result").text("プレイヤーの勝ち！");
+        playersWin++;
+        comsLoose++;
       } else if(playerChoose === "paper" && comChoose === "scissors"){
-        $(".result").text("コンピュータの勝ち！")
+        $(".result").text("コンピュータの勝ち！");
+        comsWin++;
+        playersLoose++;
       } else if(playerChoose === "scissors" && comChoose === "paper"){
-        $(".result").text("プレイヤーの勝ち！")
+        $(".result").text("プレイヤーの勝ち！");
+        playersWin++;
+        comsLoose++;
       } else if(playerChoose === "scissors" && comChoose === "rock"){
-        $(".result").text("コンピュータの勝ち！")
+        $(".result").text("コンピュータの勝ち！");
+        comsWin++;
+        playersLoose++;
       }
 
+
+      $(".comPatterns").text("ぽん！");
+      $(".playerWin").text(playersWin);
+      $(".playerLoose").text(playersLoose);
+      $(".comWin").text(comsWin);
+      $(".comLoose").text(comsLoose);
+      $(".drowCount").text(drowCount);
+      $(".allCount").text(count);
+
     });
+
+
     $(".reset").on("click", function(){
       location.reload();
     });
