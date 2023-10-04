@@ -7,11 +7,11 @@
 </head>
 <body>
   <div class="modeBtn" data-shown="1">
-    <button class="modeSelct modeEasy">EASY</button>
-    <button class="modeSelct modeNomal">NORMAL</button>
-    <button class="modeSelct modeHard">HARD</button>
+    <button class="modeSelect modeEasy">EASY</button>
+    <button class="modeSelect modeNomal">NORMAL</button>
+    <button class="modeSelect modeHard">HARD</button>
   </div>
-  <div class="contentsWlapper">
+  <div class="contentsWlapper" data-shown="0">
     <div class="comWrapper">
       <div class="comChoose"></div>
       <p class="comPatterns">じゃんけん……</p>
@@ -49,7 +49,7 @@
       </tbody>
     </table>
   </div>
-  <div class="resetWrapper">
+  <div class="resetWrapper" data-shown="0">
     <button class="reset">RESET</button>
   </div>
 </body>
@@ -57,10 +57,33 @@
 
   .modeBtn{
     text-align: center;
+    margin-top: 200px;
   }
 
-  .modeBtn[data-shown="0"]{
+  .modeBtn[data-shown="0"],
+  .contentsWlapper[data-shown="0"],
+  .resetWrapper[data-shown="0"]{
     display: none;
+  }
+
+  .modeSelect{
+    margin-right: 15px;
+  }
+
+  button {
+      font-size: 15px;
+      display: inline-block;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      color: #FFF;
+      background-image: linear-gradient(45deg, #B78D4A 0%, #D4BB92 100%);
+      margin: 0 10px;
+      cursor: pointer;
+  }
+
+  button:hover {
+      background-image: linear-gradient(45deg, #D4BB92 0%, #FDE0A5 100%);
   }
 
   .comWrapper{
@@ -138,30 +161,34 @@
     var modeSelect;
 
     $(".modeSelect").on("click", function(){
-      if ($(this).hasClass(".modeEasy")) {
+      if ($(this).hasClass("modeEasy")) {
         modeSelect = "easy";
-      } else if ($(this).hasClass(".modeNomal")) {
+      } else if ($(this).hasClass("modeNomal")) {
         modeSelect = "normal";
-      } else if ($(this)) {
+      } else if ($(this).hasClass("modeHard")) {
         modeSelect = "hard";
       }
-    })
+      $(".modeBtn").attr("data-shown", 0);
+      $(".contentsWlapper").attr("data-shown", 1);
+      $(".resetWrapper").attr("data-shown", 1);
+      console.log(modeSelect);
+    });
 
-    function CPU (){
+    function CPU (order, playerRock, playerPaper, playerScissors){
 
         var pattern = Math.floor(Math.random()*(comPatterns.length));
         var comChoose;
 
-        if(count > 5){
-          if(playerPatternsRock.length > playerPatternsScissors.length){
+        if(order > 5){
+          if(playerRock.length > playerScissors.length){
             comChoose = comPatterns[1];
             $(".comChoose").removeClass("rock paper scissors");
             $(".comChoose").addClass(comChoose);
-          } else if(playerPatternsPaper.length > playerPatternsRock.length){
+          } else if(playerPaper.length > playerRock.length){
             comChoose = comPatterns[2];
             $(".comChoose").removeClass("rock paper scissors");
             $(".comChoose").addClass(comChoose);
-          } else if(playerPatternsScissors.length > playerPatternsPaper.length){
+          } else if(playerScissors.length > playerPaper.length){
             comChoose = comPatterns[0];
             $(".comChoose").removeClass("rock paper scissors");
             $(".comChoose").addClass(comChoose);
@@ -205,18 +232,45 @@
 
     $(".playerChoose").on("click", function(){
 
-      // count++;
+      count++;
 
-      // var playerChoose;
-      // var comChoose;
+      var playerChoose;
+      var comChoose;
 
-      // if(modeSelect === "easy"){
-      //   playerChoose = Player(this);
-      //   comChoose = CPU();
-      // } else
 
-      var playerChoose = Player(this);
-      var comChoose = CPU();
+      if(modeSelect === "easy"){
+        playerChoose = Player(this);
+        comChoose = CPU(count);
+        console.log("ez")
+      } else if(modeSelect === "normal"){
+        comChoose = CPU(count, playerPatternsRock, playerPatternsPaper, playerPatternsScissors);
+        playerChoose = Player(this);
+        if(playerChoose === "rock"){
+          playerPatternsRock.push(playerChoose);
+          $(".playerChooseBtn").text("グー！");
+        } else if(playerChoose === "paper"){
+          playerPatternsPaper.push(playerChoose)
+          $(".playerChooseBtn").text("パー！");
+        } else if(playerChoose === "scissors"){
+          playerPatternsScissors.push(playerChoose);
+          $(".playerChooseBtn").text("チョキ！");
+        }
+        console.log("nomal");
+      } else if (modeSelect === "hard"){
+        playerChoose = Player(this);
+        if(playerChoose === "rock"){
+          playerPatternsRock.push(playerChoose);
+          $(".playerChooseBtn").text("グー！");
+        } else if(playerChoose === "paper"){
+          playerPatternsPaper.push(playerChoose)
+          $(".playerChooseBtn").text("パー！");
+        } else if(playerChoose === "scissors"){
+          playerPatternsScissors.push(playerChoose);
+          $(".playerChooseBtn").text("チョキ！");
+        }
+        comChoose = CPU(count, playerPatternsRock, playerPatternsPaper, playerPatternsScissors);
+        console.log("hard");
+      }
 
       // var eachPattern = [];
       // eachPattern.push(playerChoose, comChoose);
