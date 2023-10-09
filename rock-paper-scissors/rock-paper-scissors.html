@@ -171,10 +171,10 @@
       $(".modeBtn").attr("data-shown", 0);
       $(".contentsWlapper").attr("data-shown", 1);
       $(".resetWrapper").attr("data-shown", 1);
-      console.log(modeSelect);
+      // console.log(modeSelect);
     });
 
-    function CPU (order, playerRock, playerPaper, playerScissors){
+    function CPU (order, playerRock=0, playerPaper=0, playerScissors=0){
 
         var pattern = Math.floor(Math.random()*(comPatterns.length));
         var comChoose;
@@ -196,13 +196,11 @@
             comChoose = comPatterns[pattern];
             $(".comChoose").removeClass("rock paper scissors");
             $(".comChoose").addClass(comChoose);
-            console.log("ran")
           }
         } else {
           comChoose = comPatterns[pattern];
           $(".comChoose").removeClass("rock paper scissors");
           $(".comChoose").addClass(comChoose);
-          console.log("dom")
         }
 
         return comChoose;
@@ -241,7 +239,6 @@
       if(modeSelect === "easy"){
         playerChoose = Player(this);
         comChoose = CPU(count);
-        console.log("ez")
       } else if(modeSelect === "normal"){
         comChoose = CPU(count, playerPatternsRock, playerPatternsPaper, playerPatternsScissors);
         playerChoose = Player(this);
@@ -255,7 +252,6 @@
           playerPatternsScissors.push(playerChoose);
           $(".playerChooseBtn").text("チョキ！");
         }
-        console.log("nomal");
       } else if (modeSelect === "hard"){
         playerChoose = Player(this);
         if(playerChoose === "rock"){
@@ -269,7 +265,6 @@
           $(".playerChooseBtn").text("チョキ！");
         }
         comChoose = CPU(count, playerPatternsRock, playerPatternsPaper, playerPatternsScissors);
-        console.log("hard");
       }
 
       // var eachPattern = [];
